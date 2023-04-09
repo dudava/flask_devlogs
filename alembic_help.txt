@@ -1,0 +1,2 @@
+alembic revision --autogenerate -m "добавили признак публикации"
+alembic upgrade head
