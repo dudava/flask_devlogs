@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 from flask_restful import Api
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from datetime import timedelta
 
 from data import db
-from data.__all_models import User, Topic
+from data.__all_models import User, Topic, Post, Comment
 import users_resources
 from tools.json import make_JSON_response, check_keys, create_jwt_response
 from forms import RegisterForm, LoginForm
@@ -24,9 +24,44 @@ api = Api(app)
 api.add_resource(users_resources.UserResource, '/api/v1/users/<int:user_id>')
 api.add_resource(users_resources.UsersListResource, '/api/v1/users')
 
+
+@app.route('/fill_db')
+def fill_db():
+	user = User(email='123@123.ru')
+	user.set_password('123')
+	topic = Topic(title='Охуеннейший проект на flask и еще цыганском табуне очень нужных библиотек фласка', description='Очень большой текст описания для тестирования размеров блока'
+							 'для топиков на главной страницы, надеюсь он будет классно выглядеть, а то я повешусь')
+	post1 = Post(content="Simple content")
+	post2 = Post(content="Simple content twice")
+
+	topic.posts.append(post1)
+	topic.posts.append(post2)
+	user.topics.append(topic)
+
+	comment = Comment(content='Fooo Huina')
+	user.comments.append(comment)
+	post1.comments.append(comment)
+
+	session = db.create_session()
+	
+	# session.delete(session.query(User).get(3))
+	session.add(user)
+	session.commit()
+	return redirect('/')
+
+
 @app.route('/')
 def root():
-	return render_template('index.html')
+	session = db.create_session()
+	user = session.query(User).first()
+	topics = session.query(Topic).all()
+	return render_template('index.html', topics=topics)
+
+
+@app.route('/topic')
+def topic():
+	return render_template('topic.html')
+
 
 @app.route('/test')
 @login_required
@@ -73,24 +108,14 @@ def user_register():
 		user = User(email=form.email.data)
 		user.set_password(form.password.data)
 		session.add(user)
-		session.commit()		
+		session.commit()
+		flash('Аккаунт успешно создан')		
 		return redirect('/login')
 	return render_template('registration.html', form=form)
 
 
-def fill_db():
-	user = User(email='123@123.ru')
-	user.set_password('123')
-	topic = Topic(title='Title', description='Description')
-	user.topics.append(topic)
-	session = db.create_session()
-	session.add(user)
-	session.commit()
-
-
 def main():
-	db.init('databases/database.db')
-	fill_db()
+	db.init('databases/database.sqlite')
 	app.run()
 
 

@@ -18,9 +18,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-# target_metadata = None
+target_metadata = None
 import sys
-sys.path.insert(0, 'C:/Users/дудавик/Documents/python_projects/flask/flask_project')
+sys.path.insert(0, r'C:\Users\дудавик\Documents\python_projects\flask\flask_project')
 from data.db import Base
 import data.__all_models
 target_metadata = Base.metadata

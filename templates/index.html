@@ -1,27 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="code-line" data-line-start=0 data-line-end=1><a id="___0"></a>Добавлена регистрация пользователя</h1>
-<ul>
-<li class="has-line-data" data-line-start="1" data-line-end="2">Инициализация sqlalchemy и создание базы данных пользователей</li>
-<li class="has-line-data" data-line-start="2" data-line-end="3">Добавление класса User</li>
-<li class="has-line-data" data-line-start="3" data-line-end="4">Обновление полей в базы данных с помощью alembic</li>
-<li class="has-line-data" data-line-start="4" data-line-end="5">Создание ресурсов пользователей с помощью flask-RESTful</li>
-<li class="has-line-data" data-line-start="5" data-line-end="6">Api для регистрации, с созданием jwt (flask-JWT-Simple)</li>
-<li class="has-line-data" data-line-start="6" data-line-end="7">Тестирование api с помощью Chrome Advanced REST client</li>
-<li class="has-line-data" data-line-start="7" data-line-end="9">Использование dillinger для построения md страниц<br>
-<img src="/static/imgs/register_rest_test.jpg" alt="картинка"></li>
-</ul>
-<hr>
-<h1 class="code-line" data-line-start=12 data-line-end=13><a id="___12"></a>Добавлена регистрация пользователя</h1>
-<ul>
-<li class="has-line-data" data-line-start="13" data-line-end="14">Инициализация sqlalchemy и создание базы данных пользователей</li>
-<li class="has-line-data" data-line-start="14" data-line-end="15">Добавление класса User</li>
-<li class="has-line-data" data-line-start="15" data-line-end="16">Обновление полей в базы данных с помощью alembic</li>
-<li class="has-line-data" data-line-start="16" data-line-end="17">Создание ресурсов пользователей с помощью flask-RESTful</li>
-<li class="has-line-data" data-line-start="17" data-line-end="18">Api для регистрации, с созданием jwt (flask-JWT-Simple)</li>
-<li class="has-line-data" data-line-start="18" data-line-end="19">Тестирование api с помощью Chrome Advanced REST client</li>
-<li class="has-line-data" data-line-start="19" data-line-end="21">Использование dillinger для построения md страниц<br>
-<img src="/static/imgs/register_rest_test.jpg" alt="картинка"></li>
-</ul>
+
+{% if current_user.is_authenticated %}
+<p>Красава {{ current_user.email }} {{ current_user.get_id() }}, вход прошел успешно</p>
+{% endif %}
+<div style='width: 600px'>
+	{% for topic in topics %}
+		<figure class="text-center">
+		  <blockquote class="blockquote">
+		    <p>{{ topic.title }}</p>
+		  </blockquote>
+		  <figcaption class="blockquote-footer"><cite title="Source Title">{{ topic.description }}</cite>
+		  </figcaption>
+		  <p class="text-right">{{ topic.user.email }}</p>
+		</figure>
+	{% endfor %}	
+</div>
+
 {% endblock %}

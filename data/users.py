@@ -14,6 +14,7 @@ class User(Base, SerializerMixin, UserMixin):
 	email = Column(String, nullable=True)
 	hashed_password = Column(String, nullable=True)
 	topics = relationship('Topic', backref='user')
+	comments = relationship('Comment', backref='user')
 
 	@staticmethod
 	def check_uniqueness_email(email):
