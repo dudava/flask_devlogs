@@ -3,19 +3,25 @@
 {% block content %}
 
 {% if current_user.is_authenticated %}
-<p>Красава {{ current_user.email }} {{ current_user.get_id() }}, вход прошел успешно</p>
+<p>Красава {{ current_user.username }} {{ current_user.get_id() }}, вход прошел успешно</p>
 {% endif %}
-<div style='width: 600px'>
+<style>
+	.div-topic {
+		width: 600px;
+		margin-bottom: 20px;
+	}
+</style>
 	{% for topic in topics %}
+	<div class="div-topic">
 		<figure class="text-center">
 		  <blockquote class="blockquote">
-		    <p>{{ topic.title }}</p>
+		    <a href="/{{ topic.user.username }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
 		  </blockquote>
 		  <figcaption class="blockquote-footer"><cite title="Source Title">{{ topic.description }}</cite>
 		  </figcaption>
-		  <p class="text-right">{{ topic.user.email }}</p>
+		  	<a href="/{{ topic.user.username }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
 		</figure>
+		</div>
 	{% endfor %}	
-</div>
 
 {% endblock %}

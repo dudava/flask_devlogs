@@ -25,6 +25,16 @@ class User(Base, SerializerMixin, UserMixin):
 				return False
 		return True
 
+	@staticmethod
+	def check_uniqueness_username(username):
+		session = create_session()
+		users = session.query(User).all()
+		for user in users:
+			if user.username == username:
+				return False
+		return True		
+
+
 	def set_password(self, password):
 		self.hashed_password = generate_password_hash(password)
 

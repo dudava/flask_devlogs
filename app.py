@@ -8,7 +8,7 @@ from data import db
 from data.__all_models import User, Topic, Post, Comment
 import users_resources
 from tools.json import make_JSON_response, check_keys, create_jwt_response
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, TopicForm
 
 
 app = Flask(__name__)
@@ -29,7 +29,7 @@ api.add_resource(users_resources.UsersListResource, '/api/v1/users')
 def fill_db():
 	user = User(email='123@123.ru')
 	user.set_password('123')
-	topic = Topic(title='Охуеннейший проект на flask и еще цыганском табуне очень нужных библиотек фласка', description='Очень большой текст описания для тестирования размеров блока'
+	topic = Topic(title='Классный проект на flask и еще цыганском табуне очень нужных библиотек фласка', description='Очень большой текст описания для тестирования размеров блока'
 							 'для топиков на главной страницы, надеюсь он будет классно выглядеть, а то я повешусь')
 	post1 = Post(content="Simple content")
 	post2 = Post(content="Simple content twice")
@@ -58,15 +58,35 @@ def root():
 	return render_template('index.html', topics=topics)
 
 
-@app.route('/topic')
-def topic():
-	return render_template('topic.html')
+@app.route('/topic/<string:username>/<int:topic_id>')
+def topic(username, topic_id):
+	return render_template('topic.html', username=username, topic_id=topic_id)
 
 
-@app.route('/test')
+@app.route('/create_post/<int:topic_id>')
+def create_post(topic_id):
+	session = db.create_session()
+	topic = session.query(Topic).get(topic_id)
+	if current_user == topic.user:
+		return 'все нормально'
+	return 'пошел отсюда'
+
+
+@app.route('/create_topic', methods=['GET', 'POST'])
 @login_required
-def test():
-	return render_template('test.html')
+def create_topic():
+	form = TopicForm()
+	if form.validate_on_submit():
+		topic = Topic(title=form.title.data, description=form.description.data)
+
+		session = db.create_session()
+		user = session.query(User).get(current_user.id)
+		user.topics.append(topic)
+		
+		session.add(user)
+		session.commit()
+		return redirect('/')
+	return render_template('create_topic.html', form=form)
 
 
 @login_manager.user_loader
@@ -104,8 +124,10 @@ def user_register():
 	if form.validate_on_submit():
 		if not User.check_uniqueness_email(form.email.data):
 			return render_template('registration.html', form=form, error='Аккаунт с такой почтой уже зарегистрирован')
+		if not User.check_uniqueness_username(form.username.data):
+			return render_template('registration.html', form=form, error='Аккаунт с таким именем уже зарегистрирован')
 		session = db.create_session()
-		user = User(email=form.email.data)
+		user = User(username=form.username.data, email=form.email.data)
 		user.set_password(form.password.data)
 		session.add(user)
 		session.commit()

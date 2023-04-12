@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, PasswordField, EmailField, BooleanField, SubmitField, TextAreaField, FileField
+from wtforms.validators import DataRequired, Optional, Length, Email
 
 
 class RegisterForm(FlaskForm):
-	email = EmailField('Почта', validators=[DataRequired()])
-	password = PasswordField('Пароль', validators=[DataRequired()])
-	submit = SubmitField('Войти')
+    username = StringField('Имя пользователя', validators=[DataRequired()])
+    email = EmailField('Почта', validators=[DataRequired(), Email()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    submit = SubmitField('Зарегистрироваться')
 
 
 class LoginForm(FlaskForm):
@@ -14,3 +15,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
+
+class TopicForm(FlaskForm):
+    title = StringField('Название', validators=[DataRequired(), Length(max=100)])
+    description = TextAreaField('Краткое описание', validators=[Optional(strip_whitespace=True), Length(min=0, max=200)])
+    submit = SubmitField('Создать')
+
+
+class PostForm(FlaskForm):
+    file = FileField('Приложите MD файл')
+    submit = SubmitField('Добавить')
