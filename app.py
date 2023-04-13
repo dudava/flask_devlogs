@@ -1,8 +1,13 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, jsonify
+import flask
 from flask_restful import Api
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-
+from flask_cors import CORS, cross_origin
 from datetime import timedelta
+from loguru import logger
+import os
+import uuid
+
 
 from data import db
 from data.__all_models import User, Topic, Post, Comment
@@ -14,15 +19,35 @@ from forms import RegisterForm, LoginForm, TopicForm
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-
+# app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
 api = Api(app)
+login_manager = LoginManager()
 
+login_manager.init_app(app)
 api.add_resource(users_resources.UserResource, '/api/v1/users/<int:user_id>')
 api.add_resource(users_resources.UsersListResource, '/api/v1/users')
+blueprint = flask.Blueprint(
+	'upload_image_api',
+	__name__,
+	template_folder = 'templates'
+)
+
+@blueprint.route('/upload_image', methods=['POST', 'OPTIONS'])
+@login_required
+def upload_image():
+	if request.method == 'OPTIONS':
+		logger.debug(request)
+	if not os.path.exists(f'static/imgs/{current_user.username}'):
+		os.mkdir(f'static/imgs/{current_user.username}')
+
+	image = request.files['file']
+	image_name = request.form['image_name'].split('.')[0]
+	image_type = request.form['image_name'].split('.')[-1]
+	image_path = f"static/imgs/{current_user.username}/{uuid.uuid1(node=uuid.getnode())}.{image_type}" 
+	with open(image_path, mode='wb') as file:
+		file.write(request.files['file'].read())
+	return f'![{image_name}]({image_path})'
 
 
 @app.route('/fill_db')
@@ -63,15 +88,6 @@ def topic(username, topic_id):
 	return render_template('topic.html', username=username, topic_id=topic_id)
 
 
-@app.route('/create_post/<int:topic_id>')
-def create_post(topic_id):
-	session = db.create_session()
-	topic = session.query(Topic).get(topic_id)
-	if current_user == topic.user:
-		return 'все нормально'
-	return 'пошел отсюда'
-
-
 @app.route('/create_topic', methods=['GET', 'POST'])
 @login_required
 def create_topic():
@@ -87,6 +103,15 @@ def create_topic():
 		session.commit()
 		return redirect('/')
 	return render_template('create_topic.html', form=form)
+
+
+@app.route('/create_post/<int:topic_id>')
+def create_post(topic_id):
+	session = db.create_session()
+	topic = session.query(Topic).get(topic_id)
+	if current_user == topic.user:
+		return render_template('create_post.html')
+	return 'пошел отсюда'
 
 
 @login_manager.user_loader
@@ -138,6 +163,7 @@ def user_register():
 
 def main():
 	db.init('databases/database.sqlite')
+	app.register_blueprint(blueprint)
 	app.run()
 
 

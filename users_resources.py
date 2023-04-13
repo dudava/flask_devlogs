@@ -5,6 +5,10 @@ from data import db
 from data.users import User
 
 
+
+
+
+
 def abort_if_user_not_found(user_id):
 	session = db.create_session()
 	user = session.query(User).get(user_id)
@@ -45,5 +49,6 @@ class UsersListResource(Resource):
 		session.add(user)
 		session.commit()
 		return jsonify({'success': 'ok'})
+
 
 		
