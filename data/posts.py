@@ -7,5 +7,6 @@ class Post(Base):
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
 	topic_id = Column(Integer, ForeignKey('topics.id'))
-	content = Column(String, nullable=True)
+	content_url = Column(String, nullable=True)
+	likes = Column(Integer, default=0)
 	comments = relationship('Comment', backref='post')

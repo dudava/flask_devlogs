@@ -15,11 +15,11 @@
 	<div class="div-topic">
 		<figure class="text-center">
 		  <blockquote class="blockquote">
-		    <a href="/{{ topic.user.username }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
+		    <a href="/topic/{{ topic.user.id }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
 		  </blockquote>
 		  <figcaption class="blockquote-footer"><cite title="Source Title">{{ topic.description }}</cite>
 		  </figcaption>
-		  	<a href="/{{ topic.user.username }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
+		  	<a href="/user/{{ topic.user.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
 		</figure>
 		</div>
 	{% endfor %}	

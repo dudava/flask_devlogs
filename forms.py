@@ -24,5 +24,5 @@ class TopicForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    file = FileField('Приложите MD файл')
+    text = TextAreaField('Текст')
     submit = SubmitField('Добавить')
