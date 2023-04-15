@@ -33,12 +33,12 @@ blueprint = flask.Blueprint(
 	template_folder = 'templates'
 )
 
+
 @blueprint.route('/upload_image', methods=['POST', 'OPTIONS'])
 @login_required
 def upload_image():
 	if not os.path.exists(f'static/imgs/{current_user.username}'):
 		os.mkdir(f'static/imgs/{current_user.username}')
-
 	image = request.files['file']
 	image_name = request.form['image_name'].split('.')[0]
 	image_type = request.form['image_name'].split('.')[-1]
@@ -46,6 +46,14 @@ def upload_image():
 	with open(image_path, mode='wb') as file:
 		file.write(request.files['file'].read())
 	return f"![{image_name}]({'/' + image_path})"
+
+@blueprint.route('/get_preview_md', methods=['POST', 'OPTIONS'])
+@login_required
+def get_preview_md():
+	tempfile_path = f'static/tempfiles/{uuid.uuid1(node=uuid.getnode())}.md'
+	with open(tempfile_path, mode='wt', encoding='utf-8') as md_file:
+		md_file.write(request.form['text'])
+	return '/' + tempfile_path
 
 
 @app.route('/fill_db')
@@ -117,7 +125,6 @@ def create_post(topic_id):
 			post = Post()
 			session.add(post)
 			session.flush()
-			logger.debug(post.id)
 			post_path = f'static/posts/{current_user.username}/{topic.title}/{post.id}.md'
 			with open(post_path, mode='wt', encoding='utf-8') as md_file:
 				md_file.write(form.text.data)
