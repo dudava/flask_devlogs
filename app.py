@@ -7,7 +7,7 @@ from datetime import timedelta
 from loguru import logger
 import os
 import uuid
-
+from waitress import serve
 
 from data import db
 from data.__all_models import User, Topic, Post, Comment
@@ -187,7 +187,7 @@ def user_register():
 def main():
 	db.init('databases/database.sqlite')
 	app.register_blueprint(blueprint)
-	app.run()
+	serve(app, host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':
