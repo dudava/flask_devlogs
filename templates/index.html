@@ -7,37 +7,42 @@
 {% endif %}
 <style>
 	.div-topic {
-		width: 600px;
-		margin-bottom: 20px;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		margin-bottom: 15px;
+		border-bottom: 2px solid #ccc;
+		padding-bottom: 15px;
+	}
+	.div-topic .topic-title,
+	.div-topic .topic-description,
+	.div-topic .topic-email {
+		flex: 1;
+		margin: 0;
 	}
 </style>
-	<div class="container mt-5">
+	<div class="container mt-1">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Топ проектов</h1>
-                <p class="lead text-center">Здесь собраны самые лучшие проекты</p>
+                <h1 class="text-center">Топ тем</h1>
+                <p class="lead text-center">Здесь собраны популярные темы</p>
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <img src="https://via.placeholder.com/350x150" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Первый проект</h5>
-                        <p class="card-text">Делаю проект, который будет находить число пи</p>
-                        <a href="#" class="btn btn-primary">Смотреть</a>
-                    </div>
+            <div class="col">
+                {% for topic in topics %}
+                <div class="div-topic">
+                    <p class="topic-title">
+                        <a href="/topic/{{ topic.user.id }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
+                    </p>
+                    <p class="topic-description">
+                        {{ topic.description }}
+                    </p>
+                    <p class="topic-email">
+                        <a href="/user/{{ topic.user.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
+                    </p>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <img src="https://via.placeholder.com/350x150" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Второй проект</h5>
-                        <p class="card-text">Я сделал вычислитель хэшей!</p>
-                        <a href="#" class="btn btn-primary">Смотреть</a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
         <div class="row mt-4">
@@ -48,17 +53,4 @@
             </div>
         </div>
 	</div>
-	{% for topic in topics %}
-	<div class="div-topic">
-		<figure class="text-center">
-		  <blockquote class="blockquote">
-		    <a href="/topic/{{ topic.user.id }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
-		  </blockquote>
-		  <figcaption class="blockquote-footer"><cite title="Source Title">{{ topic.description }}</cite>
-		  </figcaption>
-		  	<a href="/user/{{ topic.user.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
-		</figure>
-		</div>
-	{% endfor %}	
-
 {% endblock %}
