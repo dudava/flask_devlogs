@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-{% if current_user.is_authenticated %}
-<p>Красава {{ current_user.username }} {{ current_user.get_id() }}, вход прошел успешно</p>
-{% endif %}
 <style>
 	.div-topic {
 		display: flex;
@@ -14,43 +10,68 @@
 		border-bottom: 2px solid #ccc;
 		padding-bottom: 15px;
 	}
+
 	.div-topic .topic-title,
 	.div-topic .topic-description,
 	.div-topic .topic-email {
 		flex: 1;
 		margin: 0;
 	}
+
+	html, body {
+		height: 100%;
+	}
+
+	.footer-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 100%;
+	}
+
+	.content-container {
+		flex: 1;
+	}
 </style>
-	<div class="container mt-1">
-        <div class="row">
-            <div class="col">
-                <h1 class="text-center">Топ тем</h1>
-                <p class="lead text-center">Здесь собраны популярные темы</p>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col">
-                {% for topic in topics %}
-                <div class="div-topic">
-                    <p class="topic-title">
-                        <a href="/topic/{{ topic.user.id }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
-                    </p>
-                    <p class="topic-description">
-                        {{ topic.description }}
-                    </p>
-                    <p class="topic-email">
-                        <a href="/user/{{ topic.user.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
-                    </p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col">
-                <footer class="bg-dark text-white py-3">
-                    <p class="text-center mb-0">© 2023 All rights reserved</p>
-                </footer>
-            </div>
-        </div>
+<div class="footer-wrapper">
+	<div class="container content-container mt-1">
+		<div class="row">
+			<div class="col">
+				<h1 class="text-center">Топ тем</h1>
+				<p class="lead text-center">Здесь собраны популярные темы</p>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col">
+				{% for topic in topics %}
+				<div class="div-topic">
+					<p class="topic-title">
+						<a href="/topic/{{ topic.user.id }}/{{ topic.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.title }}</a>
+					</p>
+					<p class="topic-description">
+						{{ topic.description }}
+					</p>
+					<p class="topic-email">
+						<a href="/user/{{ topic.user.id }}" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ topic.user.email }}</a>
+					</p>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
 	</div>
+	<footer class="bg-dark text-white py-3">
+		<p class="text-center mb-0">© 2023 All rights reserved</p>
+		<p class="text-center mb-0">
+			<a href="#" id="devs-contact-link" target="_blank" class="text-white">связь с разработчиками</a>
+		</p>
+	</footer>
+</div>
+
+<script>
+	document.getElementById('devs-contact-link').onclick = function() {
+		window.open('https://t.me/Geraaa50', '_blank');
+		window.open('https://t.me/dudavik_cool', '_blank');
+	};
+</script>
+
 {% endblock %}
