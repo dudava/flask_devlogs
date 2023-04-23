@@ -88,6 +88,7 @@ def root():
     session = db.create_session()
     user = session.query(User).first()
     topics = session.query(Topic).all()
+    session.commit()
     return render_template('index.html', topics=topics)
 
 
@@ -96,6 +97,7 @@ def topic(user_id, topic_id):
     session = db.create_session()
     user = session.query(User).get(user_id)
     topic = session.query(Topic).get(topic_id)
+    session.commit()
     return render_template('topic.html', user=user, topic=topic)
 
 
@@ -113,7 +115,6 @@ def create_topic():
         session = db.create_session()
         user = session.query(User).get(current_user.id)
         user.topics.append(topic)
-        
         session.add(user)
         try:
             session.commit()
@@ -157,7 +158,9 @@ def create_post(topic_id):
 @login_manager.user_loader
 def load_user(user_id):
     session = db.create_session()
-    return session.query(User).get(user_id)
+    user = session.query(User).get(user_id) 
+    # session.commit()
+    return user
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -166,9 +169,9 @@ def login():
     if form.validate_on_submit():
         session = db.create_session()
         user = session.query(User).filter(User.email == form.email.data).first()
+        session.commit()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            print(current_user.get_id())
             return redirect("/")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
