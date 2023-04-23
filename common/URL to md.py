@@ -3,7 +3,7 @@ import base64
 import sys
 
 # Введите ваш персональный токен доступа сюда
-TOKEN = "отправил в тг"
+TOKEN = "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"
 
 
 def get_readme(owner, repo):
