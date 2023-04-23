@@ -95,8 +95,8 @@ def root():
 @app.route('/topic/<int:user_id>/<int:topic_id>')
 def topic(user_id, topic_id):
     session = db.create_session()
-    user = session.query(User).get(user_id)
-    topic = session.query(Topic).get(topic_id)
+    user = session.get(User, user_id)
+    topic = session.get(Topic, topic_id)
     session.commit()
     return render_template('topic.html', user=user, topic=topic)
 
@@ -113,7 +113,7 @@ def create_topic():
             logger.debug('нет папки с топиком')
             os.mkdir(f'static/posts/{current_user.username}/{topic.title}')
         session = db.create_session()
-        user = session.query(User).get(current_user.id)
+        user = session.get(User, current_user.id)
         user.topics.append(topic)
         session.add(user)
         try:
@@ -129,7 +129,7 @@ def create_topic():
 @app.route('/create_post/<int:topic_id>', methods=['GET', 'POST'])
 def create_post(topic_id):
     session = db.create_session()
-    topic = session.query(Topic).get(topic_id)
+    topic = session.get(Topic, topic_id)
     if current_user == topic.user:
         form = PostForm()
         if form.validate_on_submit():
@@ -158,7 +158,7 @@ def create_post(topic_id):
 @login_manager.user_loader
 def load_user(user_id):
     session = db.create_session()
-    user = session.query(User).get(user_id) 
+    user = session.get(User, user_id)
     # session.commit()
     return user
 
@@ -212,7 +212,7 @@ def user_register():
 def main():
     db.init('databases/database.sqlite')
     app.register_blueprint(blueprint)
-    #serve(app, host='0.0.0.0', port=5000)
+    # serve(app, host='0.0.0.0', port=5000)
     app.run()
 
 
