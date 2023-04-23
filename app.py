@@ -212,8 +212,8 @@ def user_register():
 def main():
     db.init('databases/database.sqlite')
     app.register_blueprint(blueprint)
-    # serve(app, host='0.0.0.0', port=5000)
-    app.run()
+    serve(app, host='0.0.0.0', port=5000)
+    # app.run()
 
 
 if __name__ == '__main__':
