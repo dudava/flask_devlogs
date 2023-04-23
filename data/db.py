@@ -19,6 +19,7 @@ def init(path):
 		return
 
 	engine = sa.create_engine(f'sqlite:///{path}?check_same_thread=False')
+
 	sessionmaker = orm.sessionmaker(bind=engine)
 	Base.metadata.create_all(engine)	
 
