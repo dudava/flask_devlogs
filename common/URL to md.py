@@ -1,13 +1,11 @@
 import requests
 import base64
 
-API_KEY = "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"
 
-
-def download_md_file(github_url):
+def download_md_file(github_url, api_key):
     owner, repo, md_filename = extract_github_info(github_url)
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{md_filename}"
-    headers = {"Authorization": f"token {API_KEY}"}
+    headers = {'Authorization': f"token {api_key}"}
     response = requests.get(url, headers=headers)
     content = response.json()
 
@@ -30,4 +28,5 @@ def extract_github_info(github_url):
 
 if __name__ == "__main__":
     github_url = input("Введите ссылку на GitHub проект: ")
-    download_md_file(github_url)
+    api_key = "ПРО КЛЮЧ НЕ ЗАБУТЬ"
+    download_md_file(github_url, api_key)
