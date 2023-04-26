@@ -1,11 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Add Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
 
-<!-- <zero-md src="/static/posts/01_rest_register.md"></zero-md> -->
-{% for post in topic.posts %}
-	<zero-md src="{{ post.content_url }}"></zero-md>
-{% endfor %}
+<!-- Create a container to hold the content -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div> <!-- Add empty columns to create space on the left -->
+    <div class="col-md-8"> <!-- Add a column for the content -->
+      <!-- <zero-md src="/static/posts/01_rest_register.md"></zero-md> -->
+      {% for post in topic.posts %}
+        <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
+      {% endfor %}
+    </div>
+    <div class="col-md-2"></div> <!-- Add empty columns to create space on the right -->
+  </div>
+</div>
 
 {% endblock %}
