@@ -33,17 +33,17 @@
 
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/create_topic">Создать topic</a>
+                        <a class="nav-link" href="/create_topic">Создать тему</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link disabled">Создать topic</a>
+                        <a class="nav-link disabled">Создать тему</a>
                     </li>
                     {% endif %}
 
                     {% if current_user.is_authenticated and request.path.startswith('/topic/') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/create_post/{{topic.id}}">Создать post</a>
+                        <a class="nav-link" href="/create_post/{{topic.id}}">Создать пост</a>
                     </li>
                     {% endif %}
                 </ul>
