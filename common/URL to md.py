@@ -13,6 +13,7 @@ def get_readme(owner, repo):
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
+    # if True:
         content = base64.b64decode(response.json()["content"]).decode("utf-8")
         return content
     else:
