@@ -14,7 +14,7 @@ from data.__all_models import User, Topic, Post, Comment
 import users_resources
 from tools.json import make_JSON_response, check_keys, create_jwt_response
 from forms import RegisterForm, LoginForm, TopicForm, PostForm
-
+from common import URL_to_md
 
 app = Flask(__name__)
 app.debug = True
@@ -110,8 +110,14 @@ def create_topic():
         if not os.path.exists(f'static/posts/{current_user.username}'):
             os.mkdir(f'static/posts/{current_user.username}')
         if not os.path.exists(f'static/posts/{current_user.username}/{topic.title}'):
-            logger.debug('нет папки с топиком')
             os.mkdir(f'static/posts/{current_user.username}/{topic.title}')
+            if form.github_link.data:
+                api_key = "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"
+                readme_md_text = URL_to_md.download_md_file(f'{form.github_link.data}', api_key)
+                with open(f'static/posts/{current_user.username}/{topic.title}/README.md', 'wt', encoding='utf-8') as file:
+                    file.write(readme_md_text)            
+                topic.github_link = f'/static/posts/{current_user.username}/{topic.title}/README.md'
+            
         session = db.create_session()
         user = session.get(User, current_user.id)
         user.topics.append(topic)

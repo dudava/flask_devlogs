@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col-md-2"></div> <!-- Add empty columns to create space on the left -->
     <div class="col-md-8"> <!-- Add a column for the content -->
-      <!-- <zero-md src="/static/posts/01_rest_register.md"></zero-md> -->
+      <zero-md src='{{ topic.github_link }}'></zero-md>
       {% for post in topic.posts %}
         <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
       {% endfor %}
