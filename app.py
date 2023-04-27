@@ -87,7 +87,7 @@ def create_topic():
         if not os.path.exists(f'static/posts/{current_user.username}/{topic.title}'):
             os.mkdir(f'static/posts/{current_user.username}/{topic.title}')
             if form.github_link.data:
-                api_key = "АПИ КЛЮЧ НЕ ЗАБУТЬ"
+                api_key = ""
                 readme_md_text = URL_to_md.download_md_file(f'{form.github_link.data}', api_key)
                 with open(f'static/posts/{current_user.username}/{topic.title}/README.md', 'wt', encoding='utf-8') as file:
                     file.write(readme_md_text)            

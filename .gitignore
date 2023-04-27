@@ -2,3 +2,4 @@
 /alembic/
 data/__pycache__/
 /venv/
+.idea
