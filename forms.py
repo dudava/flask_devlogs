@@ -19,7 +19,9 @@ class LoginForm(FlaskForm):
 
 class TopicForm(FlaskForm):
     title = StringField('Название', validators=[DataRequired(), Length(max=100)])
-    description = TextAreaField('Краткое описание', validators=[Optional(strip_whitespace=True), Length(min=0, max=200)])
+    description = TextAreaField('Краткое описание', validators=[Optional(strip_whitespace=True),
+                                                                Length(min=0, max=200)])
+    github_link = StringField('Ссылка на github')
     submit = SubmitField('Создать')
 
 

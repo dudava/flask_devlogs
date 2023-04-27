@@ -11,4 +11,5 @@ class Topic(Base, SerializerMixin):
 	user_id = Column(Integer, ForeignKey('users.id'))
 	title = Column(String, nullable=True)
 	description = Column(String, nullable=True)
+	github_link = Column(String, nullable=True)
 	posts = relationship('Post', backref='topic')

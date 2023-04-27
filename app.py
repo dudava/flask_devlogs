@@ -9,12 +9,13 @@ import os
 import uuid
 from waitress import serve
 
+
 from data import db
 from data.__all_models import User, Topic, Post, Comment
 import users_resources
-from tools.json import make_JSON_response, check_keys, create_jwt_response
+from tools.json import make_json_response, check_keys, create_jwt_response
 from forms import RegisterForm, LoginForm, TopicForm, PostForm
-
+from common import URL_to_md
 
 app = Flask(__name__)
 app.debug = True
@@ -30,7 +31,7 @@ api.add_resource(users_resources.UsersListResource, '/api/v1/users')
 blueprint = flask.Blueprint(
     'upload_image_api',
     __name__,
-    template_folder = 'templates'
+    template_folder='templates'
 )
 
 
@@ -47,6 +48,7 @@ def upload_image():
         file.write(request.files['file'].read())
     return f"![{image_name}]({'/' + image_path})"
 
+
 @blueprint.route('/get_preview_md', methods=['POST', 'OPTIONS'])
 @login_required
 def get_preview_md():
@@ -54,33 +56,6 @@ def get_preview_md():
     with open(tempfile_path, mode='wt', encoding='utf-8') as md_file:
         md_file.write(request.form['text'])
     return '/' + tempfile_path
-
-
-@app.route('/fill_db')
-def fill_db():
-    user = User(username='dudavik', email='123@123.ru')
-    user.set_password('123')
-    topic = Topic(title='Классный проект на flask и еще цыганском табуне очень нужных библиотек фласка', description='Очень большой текст описания для тестирования размеров блока'
-                             'для топиков на главной страницы, надеюсь он будет классно выглядеть, а то я повешусь')
-    post1 = Post(content_url="/static/posts/01_rest_register.md")
-
-    topic.posts.append(post1)
-    user.topics.append(topic)
-
-    comment = Comment(content='Fooo Huina')
-    user.comments.append(comment)
-    post1.comments.append(comment)
-
-    session = db.create_session()
-    
-    session.add(user)
-    try:
-        session.commit()
-    except:
-        session.rollback()
-    finally:
-        session.close()
-    return redirect('/')
 
 
 @app.route('/')
@@ -110,8 +85,14 @@ def create_topic():
         if not os.path.exists(f'static/posts/{current_user.username}'):
             os.mkdir(f'static/posts/{current_user.username}')
         if not os.path.exists(f'static/posts/{current_user.username}/{topic.title}'):
-            logger.debug('нет папки с топиком')
             os.mkdir(f'static/posts/{current_user.username}/{topic.title}')
+            if form.github_link.data:
+                api_key = "АПИ КЛЮЧ НЕ ЗАБУТЬ"
+                readme_md_text = URL_to_md.download_md_file(f'{form.github_link.data}', api_key)
+                with open(f'static/posts/{current_user.username}/{topic.title}/README.md', 'wt', encoding='utf-8') as file:
+                    file.write(readme_md_text)            
+                topic.github_link = f'/static/posts/{current_user.username}/{topic.title}/README.md'
+            
         session = db.create_session()
         user = session.get(User, current_user.id)
         user.topics.append(topic)

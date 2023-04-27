@@ -1,11 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
 
-<!-- <zero-md src="/static/posts/01_rest_register.md"></zero-md> -->
-{% for post in topic.posts %}
-	<zero-md src="{{ post.content_url }}"></zero-md>
-{% endfor %}
+<style>
+  .full-width-btn {
+    width: 100%;
+  }
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {% if topic.github_link %}
+            <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#githubReadme"
+                    aria-expanded="false" aria-controls="githubReadme" style="width: 100%; border-top-left-radius: 0; border-top-right-radius: 0;">
+                Посмотреть Readme.md проекта с github
+            </button>
+
+            <div class="collapse" id="githubReadme">
+                <div class="card card-body">
+                    <zero-md src='{{ topic.github_link }}'></zero-md>
+                </div>
+            </div>
+            {% endif %}
+            {% for post in topic.posts %}
+            <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
+            {% endfor %}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
 
 {% endblock %}

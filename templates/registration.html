@@ -8,10 +8,10 @@
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     <p>
-                    {{ form.username.label }} <br>
-                    {{ form.username(class="form-control") }}
-                    {% for error in form.username.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
+                        {{ form.username.label }} <br>
+                        {{ form.username(class="form-control") }}
+                        {% for error in form.username.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
                     {% endfor %}
                     </p>
                     <p>
@@ -34,7 +34,7 @@
                     </p>
                     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
                     {% if error %}
-                        <div class="alert alert-danger">{{ error }}</div>
+                    <div class="alert alert-danger">{{ error }}</div>
                     {% endif %}
                 </div>
             </form>

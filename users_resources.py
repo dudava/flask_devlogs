@@ -5,10 +5,6 @@ from data import db
 from data.users import User
 
 
-
-
-
-
 def abort_if_user_not_found(user_id):
 	session = db.create_session()
 	user = session.query(User).get(user_id)
@@ -32,9 +28,9 @@ class UserResource(Resource):
 		return jsonify({'success': 'ok'})
 
 
-
 user_parser = reqparse.RequestParser()
 user_parser.add_argument('username', required=True)
+
 
 class UsersListResource(Resource):
 	def get(self):
@@ -49,6 +45,4 @@ class UsersListResource(Resource):
 		session.add(user)
 		session.commit()
 		return jsonify({'success': 'ok'})
-
-
 		
