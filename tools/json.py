@@ -2,7 +2,7 @@ from flask import make_response, jsonify
 from flask_jwt_simple import create_jwt
 
 
-def make_JSON_response(message, status):
+def make_json_response(message, status):
 	resp = make_response(message, status)
 	resp.headers['Content-type'] = 'application/json; charset=UTF8'
 	return resp
@@ -16,4 +16,4 @@ def create_jwt_response(user):
 	user_data = user.to_dict(only=('id', 'username'))
 	print(user_data)
 	j_token = {'token': create_jwt(user_data)}
-	return make_JSON_response(jsonify(j_token), 200)
+	return make_json_response(jsonify(j_token), 200)

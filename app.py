@@ -12,7 +12,7 @@ from waitress import serve
 from data import db
 from data.__all_models import User, Topic, Post, Comment
 import users_resources
-from tools.json import make_JSON_response, check_keys, create_jwt_response
+from tools.json import make_json_response, check_keys, create_jwt_response
 from forms import RegisterForm, LoginForm, TopicForm, PostForm
 from common import URL_to_md
 
@@ -30,7 +30,7 @@ api.add_resource(users_resources.UsersListResource, '/api/v1/users')
 blueprint = flask.Blueprint(
     'upload_image_api',
     __name__,
-    template_folder = 'templates'
+    template_folder='templates'
 )
 
 
@@ -47,6 +47,7 @@ def upload_image():
         file.write(request.files['file'].read())
     return f"![{image_name}]({'/' + image_path})"
 
+
 @blueprint.route('/get_preview_md', methods=['POST', 'OPTIONS'])
 @login_required
 def get_preview_md():
@@ -56,11 +57,12 @@ def get_preview_md():
     return '/' + tempfile_path
 
 
-@app.route('/fill_db')
+"""@app.route('/fill_db')
 def fill_db():
     user = User(username='dudavik', email='123@123.ru')
     user.set_password('123')
-    topic = Topic(title='Классный проект на flask и еще цыганском табуне очень нужных библиотек фласка', description='Очень большой текст описания для тестирования размеров блока'
+    topic = Topic(title='Классный проект на flask и еще цыганском табуне очень нужных библиотек фласка',
+                  description='Очень большой текст описания для тестирования размеров блока'
                              'для топиков на главной страницы, надеюсь он будет классно выглядеть, а то я повешусь')
     post1 = Post(content_url="/static/posts/01_rest_register.md")
 
@@ -80,7 +82,7 @@ def fill_db():
         session.rollback()
     finally:
         session.close()
-    return redirect('/')
+    return redirect('/')"""
 
 
 @app.route('/')

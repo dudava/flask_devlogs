@@ -2,10 +2,10 @@ import requests
 import base64
 
 
-def download_md_file(github_url, api_key):
-    owner, repo, md_filename = extract_github_info(github_url)
+def download_md_file(github_uurl, key_api):
+    owner, repo, md_filename = extract_github_info(github_uurl)
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{md_filename}"
-    headers = {'Authorization': f"token {api_key}"}
+    headers = {'Authorization': f"token {key_api}"}
     response = requests.get(url, headers=headers)
     content = response.json()
     if 'content' not in content:
@@ -18,8 +18,8 @@ def download_md_file(github_url, api_key):
     # print(f"Файл {md_filename} успешно скачан.")
 
 
-def extract_github_info(github_url):
-    url_parts = github_url.strip('/').split('/')
+def extract_github_info(github_urll):
+    url_parts = github_urll.strip('/').split('/')
     owner = url_parts[-2]
     repo = url_parts[-1]
     md_filename = 'README.md'

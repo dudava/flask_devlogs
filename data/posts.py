@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from .db import Base
 
+
 class Post(Base):
 	__tablename__ = 'posts'
 
