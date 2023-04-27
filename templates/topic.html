@@ -2,22 +2,44 @@
 
 {% block content %}
 <!-- Add Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+<!-- Add jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
 
+<style>
+  .full-width-btn {
+    width: 100%;
+  }
+
+</style>
+
 <!-- Create a container to hold the content -->
 <div class="container">
-  <div class="row">
-    <div class="col-md-2"></div> <!-- Add empty columns to create space on the left -->
-    <div class="col-md-8"> <!-- Add a column for the content -->
-      <zero-md src='{{ topic.github_link }}'></zero-md>
-      {% for post in topic.posts %}
-        <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
-      {% endfor %}
+    <div class="row">
+        <div class="col-md-2"></div> <!-- Add empty columns to create space on the left -->
+        <div class="col-md-8"> <!-- Add a column for the content -->
+            {% if topic.github_link %}
+            <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#githubReadme"
+                    aria-expanded="false" aria-controls="githubReadme" style="width: 100%; border-top-left-radius: 0; border-top-right-radius: 0;">
+                Посмотреть Readme.md проекта с github
+            </button>
+
+            <div class="collapse" id="githubReadme">
+                <div class="card card-body">
+                    <zero-md src='{{ topic.github_link }}'></zero-md>
+                </div>
+            </div>
+            {% endif %}
+            {% for post in topic.posts %}
+            <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
+            {% endfor %}
+        </div>
+        <div class="col-md-2"></div> <!-- Add empty columns to create space on the right -->
     </div>
-    <div class="col-md-2"></div> <!-- Add empty columns to create space on the right -->
-  </div>
 </div>
 
 {% endblock %}
