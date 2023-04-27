@@ -9,6 +9,7 @@ import os
 import uuid
 from waitress import serve
 
+
 from data import db
 from data.__all_models import User, Topic, Post, Comment
 import users_resources
@@ -55,34 +56,6 @@ def get_preview_md():
     with open(tempfile_path, mode='wt', encoding='utf-8') as md_file:
         md_file.write(request.form['text'])
     return '/' + tempfile_path
-
-
-"""@app.route('/fill_db')
-def fill_db():
-    user = User(username='dudavik', email='123@123.ru')
-    user.set_password('123')
-    topic = Topic(title='Классный проект на flask и еще цыганском табуне очень нужных библиотек фласка',
-                  description='Очень большой текст описания для тестирования размеров блока'
-                             'для топиков на главной страницы, надеюсь он будет классно выглядеть, а то я повешусь')
-    post1 = Post(content_url="/static/posts/01_rest_register.md")
-
-    topic.posts.append(post1)
-    user.topics.append(topic)
-
-    comment = Comment(content='Fooo Huina')
-    user.comments.append(comment)
-    post1.comments.append(comment)
-
-    session = db.create_session()
-    
-    session.add(user)
-    try:
-        session.commit()
-    except:
-        session.rollback()
-    finally:
-        session.close()
-    return redirect('/')"""
 
 
 @app.route('/')
