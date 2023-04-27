@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Add Bootstrap CSS -->
-
-
-<!-- Add jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -17,11 +13,10 @@
 
 </style>
 
-<!-- Create a container to hold the content -->
 <div class="container">
     <div class="row">
-        <div class="col-md-2"></div> <!-- Add empty columns to create space on the left -->
-        <div class="col-md-8"> <!-- Add a column for the content -->
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
             {% if topic.github_link %}
             <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#githubReadme"
                     aria-expanded="false" aria-controls="githubReadme" style="width: 100%; border-top-left-radius: 0; border-top-right-radius: 0;">
@@ -38,7 +33,7 @@
             <zero-md src="{{ post.content_url }}" class="my-3"></zero-md>
             {% endfor %}
         </div>
-        <div class="col-md-2"></div> <!-- Add empty columns to create space on the right -->
+        <div class="col-md-2"></div>
     </div>
 </div>
 
